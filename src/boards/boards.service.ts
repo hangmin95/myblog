@@ -9,6 +9,7 @@ export class BoardsService {
         @InjectRepository(Board)
         private boardsRepository: Repository<Board>,
       ) {}
+
     
       findAll(): Promise<Board[]> {
         return this.boardsRepository.find();
@@ -29,6 +30,7 @@ export class BoardsService {
       async update(id: number, board: Board): Promise<void> {
         const existBoard = await this.boardsRepository.findOneBy({id:id});
         if(existBoard){
+
             await getConnection()
                 .createQueryBuilder()
                 .update(Board)

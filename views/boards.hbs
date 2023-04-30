@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Boards</title>
+  </head>
+  <body>
+    <h2>게시물 생성하기</h2>
+    <form method="POST" action="/boards">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="content">Content:</label>
+        <input type="text" id="content" name="content" required>
+
+        <button type="submit">생성</button>
+    </form>
+
+    {{#each boards}}
+    <div class="board">
+        <h3>#{{this.id}}.{{this.title}}</h3>
+        <p>{{this.content}}</p>
+        <div>
+            <form method="POST" action="/boards/{{this.id}}">
+                <input type="submit" value="삭제" >
+            </form>
+
+            <form method="PUT" action="/boards/{{this.id}}">
+                <label for="title">변경할 제목:</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="content">변경할 내용:</label>
+                <input type="text" id="content" name="content" required>
+                
+                <input type="submit" value="수정">    
+            </form>
+        </div>
+    </div>
+    {{/each}}
+  
+  </body>
+</html>

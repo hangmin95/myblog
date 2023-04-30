@@ -1,10 +1,26 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Render, Res } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board } from './entity/boards.entity';
+import { Response } from 'express';
 
 @Controller('boards')
 export class BoardsController {
     constructor(private boardsService: BoardsService) {}
+
+    //boards.hbs 랜더링
+    @Get()
+    @Render('boards')
+    async root() {
+        const boards = await this.boardsService.findAll();
+        return { boards };  
+    }
+
+    @Post()
+    async createUser(@Body() body: Board, @Res() res: Response) {
+      await this.boardsService.create(body);
+      const boards = await this.boardsService.findAll();
+      return res.render('boards', { boards });
+    }
 
     @Get()
     findAll(): Promise<Board[]> {
@@ -21,7 +37,7 @@ export class BoardsController {
         return this.boardsService.create(board);
     }
 
-    @Delete(':id')
+    @Post(':id')
     remove(@Param('id') id: number) {
         this.boardsService.remove(id);
     }
